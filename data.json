@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-04-24T15:19:54.712Z",
+  "lastUpdated": "2026-04-24T15:50:49.443Z",
   "squads": {
     "SQZB": {
       "sprints": [],
-      "error": "Sin board Scrum"
+      "error": "Jira 400 → /rest/agile/1.0/board/137/sprint :: {\"errorMessages\":[\"The board does not support sprints\"],\"errors\":{}}"
     },
     "SQSQ": {
       "sprints": [],
@@ -54,8 +54,273 @@
       "error": "Sin board Scrum"
     },
     "SQDP": {
-      "sprints": [],
-      "error": "Jira 410 → /rest/api/3/search :: {\"errorMessages\":[\"The requested API has been removed. Please migrate to the /rest/api/3/search/jql API. A full migration guideline is available at https://developer.atlassian.com/changelog/#CHANGE-20"
+      "sprints": [
+        {
+          "id": 400,
+          "name": "Dolphin 37",
+          "startDate": "2025-02-25T14:37:16.161Z",
+          "endDate": "2025-03-11T13:43:29.000Z",
+          "botCount": 0,
+          "totalCount": 69
+        },
+        {
+          "id": 703,
+          "name": "Dolphin 38",
+          "startDate": "2025-03-11T15:13:35.929Z",
+          "endDate": "2025-03-25T14:19:05.000Z",
+          "botCount": 0,
+          "totalCount": 61
+        },
+        {
+          "id": 707,
+          "name": "Coyote 12",
+          "startDate": "2025-03-11T20:12:00.663Z",
+          "endDate": "2025-03-25T03:00:00.000Z",
+          "botCount": 0,
+          "totalCount": 2
+        },
+        {
+          "id": 708,
+          "name": "Coyote 13",
+          "startDate": "2025-03-25T12:37:14.381Z",
+          "endDate": "2025-04-08T03:00:00.000Z",
+          "botCount": 0,
+          "totalCount": 2
+        },
+        {
+          "id": 992,
+          "name": "Dolphin 39",
+          "startDate": "2025-03-25T19:30:09.481Z",
+          "endDate": "2025-04-08T18:36:31.000Z",
+          "botCount": 0,
+          "totalCount": 57
+        },
+        {
+          "id": 993,
+          "name": "Dolphin 40",
+          "startDate": "2025-04-08T15:04:49.927Z",
+          "endDate": "2025-04-22T14:10:54.000Z",
+          "botCount": 0,
+          "totalCount": 69
+        },
+        {
+          "id": 994,
+          "name": "Dolphin 41",
+          "startDate": "2025-04-24T12:57:23.061Z",
+          "endDate": "2025-05-08T12:03:09.000Z",
+          "botCount": 0,
+          "totalCount": 56
+        },
+        {
+          "id": 1256,
+          "name": "Dolphin 42",
+          "startDate": "2025-05-06T14:41:51.090Z",
+          "endDate": "2025-05-20T05:04:03.000Z",
+          "botCount": 0,
+          "totalCount": 73
+        },
+        {
+          "id": 1257,
+          "name": "Dolphin 43",
+          "startDate": "2025-05-21T15:50:28.787Z",
+          "endDate": "2025-06-04T06:13:32.000Z",
+          "botCount": 0,
+          "totalCount": 73
+        },
+        {
+          "id": 1258,
+          "name": "Dolphin 44",
+          "startDate": "2025-06-03T14:50:12.804Z",
+          "endDate": "2025-06-17T05:13:31.000Z",
+          "botCount": 0,
+          "totalCount": 107
+        },
+        {
+          "id": 1424,
+          "name": "Dolphin 45",
+          "startDate": "2025-06-18T14:49:23.867Z",
+          "endDate": "2025-07-02T05:12:39.000Z",
+          "botCount": 0,
+          "totalCount": 89
+        },
+        {
+          "id": 1520,
+          "name": "Dolphin 46",
+          "startDate": "2025-07-01T14:49:14.099Z",
+          "endDate": "2025-07-15T05:12:01.000Z",
+          "botCount": 0,
+          "totalCount": 92
+        },
+        {
+          "id": 1635,
+          "name": "Dolphin 47",
+          "startDate": "2025-07-15T14:46:32.354Z",
+          "endDate": "2025-07-29T05:08:12.000Z",
+          "botCount": 0,
+          "totalCount": 68
+        },
+        {
+          "id": 1687,
+          "name": "Dolphin 48",
+          "startDate": "2025-07-29T14:34:22.000Z",
+          "endDate": "2025-08-12T04:56:05.000Z",
+          "botCount": 0,
+          "totalCount": 87
+        },
+        {
+          "id": 1817,
+          "name": "Dolphin 49",
+          "startDate": "2025-08-12T15:46:27.729Z",
+          "endDate": "2025-08-26T06:08:02.000Z",
+          "botCount": 0,
+          "totalCount": 120
+        },
+        {
+          "id": 1916,
+          "name": "Dolphin 50",
+          "startDate": "2025-08-28T13:33:48.575Z",
+          "endDate": "2025-09-11T03:55:45.000Z",
+          "botCount": 0,
+          "totalCount": 108
+        },
+        {
+          "id": 2015,
+          "name": "Dolphin 51",
+          "startDate": "2025-09-09T14:42:37.909Z",
+          "endDate": "2025-09-23T05:04:36.000Z",
+          "botCount": 0,
+          "totalCount": 81
+        },
+        {
+          "id": 2114,
+          "name": "Dolphin 52",
+          "startDate": "2025-09-25T13:04:22.980Z",
+          "endDate": "2025-10-09T03:26:20.000Z",
+          "botCount": 0,
+          "totalCount": 85
+        },
+        {
+          "id": 2232,
+          "name": "Dolphin 53",
+          "startDate": "2025-10-07T14:38:37.898Z",
+          "endDate": "2025-10-21T05:00:24.000Z",
+          "botCount": 0,
+          "totalCount": 74
+        },
+        {
+          "id": 2378,
+          "name": "Dolphin 54",
+          "startDate": "2025-10-21T18:00:07.191Z",
+          "endDate": "2025-11-04T08:22:46.000Z",
+          "botCount": 0,
+          "totalCount": 73
+        },
+        {
+          "id": 2478,
+          "name": "Dolphin 55",
+          "startDate": "2025-11-04T15:01:16.108Z",
+          "endDate": "2025-11-18T05:23:46.000Z",
+          "botCount": 0,
+          "totalCount": 91
+        },
+        {
+          "id": 2592,
+          "name": "Dolphin 56",
+          "startDate": "2025-11-18T14:27:20.208Z",
+          "endDate": "2025-12-02T04:49:20.000Z",
+          "botCount": 0,
+          "totalCount": 84
+        },
+        {
+          "id": 2765,
+          "name": "Dolphin 57",
+          "startDate": "2025-12-02T14:47:04.118Z",
+          "endDate": "2025-12-16T05:09:01.000Z",
+          "botCount": 0,
+          "totalCount": 82
+        },
+        {
+          "id": 2969,
+          "name": "Dolphin 58",
+          "startDate": "2025-12-16T14:36:20.318Z",
+          "endDate": "2025-12-30T04:58:54.000Z",
+          "botCount": 0,
+          "totalCount": 84
+        },
+        {
+          "id": 3134,
+          "name": "Dolphin 59",
+          "startDate": "2025-12-30T14:29:03.060Z",
+          "endDate": "2026-01-13T04:52:00.000Z",
+          "botCount": 0,
+          "totalCount": 80
+        },
+        {
+          "id": 3559,
+          "name": "Dolphin 60",
+          "startDate": "2026-01-13T14:26:17.687Z",
+          "endDate": "2026-01-27T04:49:53.000Z",
+          "botCount": 0,
+          "totalCount": 85
+        },
+        {
+          "id": 3859,
+          "name": "Dolphin 61",
+          "startDate": "2026-01-27T14:31:08.232Z",
+          "endDate": "2026-02-10T04:51:13.000Z",
+          "botCount": 0,
+          "totalCount": 99
+        },
+        {
+          "id": 3930,
+          "name": "Dolphin 62",
+          "startDate": "2026-02-10T14:30:15.460Z",
+          "endDate": "2026-02-24T04:50:05.000Z",
+          "botCount": 1,
+          "totalCount": 71
+        },
+        {
+          "id": 4267,
+          "name": "Dolphin 63",
+          "startDate": "2026-02-24T14:47:36.480Z",
+          "endDate": "2026-03-10T05:07:21.000Z",
+          "botCount": 1,
+          "totalCount": 72
+        },
+        {
+          "id": 4548,
+          "name": "Dolphin 64",
+          "startDate": "2026-03-11T13:42:30.293Z",
+          "endDate": "2026-03-25T04:02:18.000Z",
+          "botCount": 4,
+          "totalCount": 65
+        },
+        {
+          "id": 4791,
+          "name": "Dolphin 65",
+          "startDate": "2026-03-25T14:37:01.841Z",
+          "endDate": "2026-04-07T14:00:00.000Z",
+          "botCount": 17,
+          "totalCount": 73
+        },
+        {
+          "id": 4993,
+          "name": "Dolphin 66",
+          "startDate": "2026-04-07T14:43:38.173Z",
+          "endDate": "2026-04-20T14:06:24.000Z",
+          "botCount": 26,
+          "totalCount": 84
+        },
+        {
+          "id": 5094,
+          "name": "Dolphin 67",
+          "startDate": "2026-04-21T14:39:17.856Z",
+          "endDate": "2026-05-04T14:02:06.000Z",
+          "botCount": 14,
+          "totalCount": 48
+        }
+      ],
+      "error": null
     },
     "SQCY": {
       "sprints": [],
