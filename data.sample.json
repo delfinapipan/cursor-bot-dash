@@ -93,7 +93,13 @@
       ],
       "error": null
     },
-    "SQXS": { "sprints": [], "error": "Sin board Scrum" },
+    "SQCC": {
+      "sprints": [
+        { "id": 18001, "name": "SQCC Sprint 1", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 2, "totalCount": 13 },
+        { "id": 18002, "name": "SQCC Sprint 2", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 4, "totalCount": 14 }
+      ],
+      "error": null
+    },
     "SQCY": {
       "sprints": [
         { "id": 16001, "name": "SQCY Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 4, "totalCount": 17 },

@@ -63,7 +63,7 @@ El workflow corre cada 6 horas (y también se puede disparar manualmente). Trae 
 
 ## Squads monitoreados
 
-`SQZB` `SQSQ` `SQSH` `SQRN` `SQRC` `SQPM` `SQPD` `SQOW` `SQOT` `SQKA` `SQJG` `SQGZ` `SQEG` `SQDP` `SQXS` `SQCY` `SQWH`
+`SQZB` `SQSQ` `SQSH` `SQRN` `SQRC` `SQPM` `SQPD` `SQOW` `SQOT` `SQKA` `SQJG` `SQGZ` `SQEG` `SQDP` `SQCY` `SQWH` `SQCC`
 
 ## Criterio de tasks del bot
 

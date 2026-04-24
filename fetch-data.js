@@ -8,7 +8,7 @@ const START_DATE  = '2025-02-24';
 const SQUADS = [
   'SQZB', 'SQSQ', 'SQSH', 'SQRN', 'SQRC', 'SQPM', 'SQPD',
   'SQOW', 'SQOT', 'SQKA', 'SQJG', 'SQGZ', 'SQEG', 'SQDP',
-  'SQXS', 'SQCY', 'SQWH'
+  'SQCY', 'SQWH', 'SQCC'
 ];
 
 if (!TOKEN) {
@@ -45,11 +45,22 @@ async function getBoardId(squad) {
 }
 
 async function getSprints(boardId) {
-  const data = await jiraFetch(
-    `/rest/agile/1.0/board/${boardId}/sprint?state=closed,active&maxResults=100`
-  );
+  // Paginamos hasta agarrar todos los sprints del board (Jira devuelve de a 50).
+  const all = [];
+  let startAt = 0;
+  const pageSize = 50;
+  while (true) {
+    const data = await jiraFetch(
+      `/rest/agile/1.0/board/${boardId}/sprint?state=closed,active&startAt=${startAt}&maxResults=${pageSize}`
+    );
+    const values = data.values || [];
+    all.push(...values);
+    if (data.isLast || values.length < pageSize) break;
+    startAt += pageSize;
+    if (startAt > 1000) break; // safety: no board deberia tener >1000 sprints
+  }
   const cutoff = new Date(START_DATE);
-  return (data.values || [])
+  return all
     .filter(s => s.startDate && new Date(s.startDate) >= cutoff)
     .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
     .map(s => ({

@@ -135,6 +135,41 @@
       color: var(--text-secondary);
     }
 
+    /* ── Filter bar ─────────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .filter-bar label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .filter-bar select {
+      flex: 1;
+      max-width: 340px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .filter-bar select:hover { border-color: #a3a3a3; }
+    .filter-bar select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
     .section-label {
       font-size: 11px;
       font-weight: 600;
@@ -319,7 +354,7 @@
 const SQUADS = [
   'SQZB', 'SQSQ', 'SQSH', 'SQRN', 'SQRC', 'SQPM', 'SQPD',
   'SQOW', 'SQOT', 'SQKA', 'SQJG', 'SQGZ', 'SQEG', 'SQDP',
-  'SQXS', 'SQCY', 'SQWH'
+  'SQCY', 'SQWH', 'SQCC'
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -329,6 +364,7 @@ const state = {
   rawData: null,
   squadStats: {},
   currentView: 'global',
+  selectedSprintKey: null, // null = todos los sprints; o el startDate ISO de un sprint
   charts: {}
 };
 
@@ -372,6 +408,33 @@ function avgAdoptionForSprint(rawData, startDate) {
   }
   if (pcts.length === 0) return null;
   return pcts.reduce((a, b) => a + b, 0) / pcts.length;
+}
+
+// Devuelve los sprints de un squad que aplican segun el filtro (null = todos).
+function filteredSquadSprints(rawData, squad, sprintKey) {
+  const all = rawData.squads[squad]?.sprints || [];
+  if (!sprintKey) return all;
+  return all.filter(s => s.startDate === sprintKey);
+}
+
+// Calcula stats de un squad bajo el filtro de sprint activo.
+function computeSquadStatsFiltered(rawData, squad, sprintKey) {
+  const sprints = filteredSquadSprints(rawData, squad, sprintKey);
+  const totalBot = sprints.reduce((s, x) => s + x.botCount, 0);
+  const totalAll = sprints.reduce((s, x) => s + x.totalCount, 0);
+  const pct = totalAll > 0 ? (totalBot / totalAll) * 100 : 0;
+  return { totalBot, totalAll, pct, sprintCount: sprints.length };
+}
+
+// Formatea una etiqueta legible para un sprint del dropdown.
+function sprintLabel(sprint) {
+  const s = new Date(sprint.startDate);
+  const e = sprint.endDate ? new Date(sprint.endDate) : null;
+  const fmt = d => d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' });
+  const startStr = fmt(s);
+  const endStr = e ? fmt(e) : '';
+  const year = s.getFullYear();
+  return endStr ? `${startStr} – ${endStr} ${year}` : `${startStr} ${year}`;
 }
 
 function formatPct(n) {
@@ -443,21 +506,52 @@ function renderTimestamp() {
 function renderGlobalView() {
   destroyAllCharts();
 
-  const squadsWithData = SQUADS.filter(s => state.squadStats[s]?.sprintCount > 0);
   const sprintsAll = allSprintsChrono(state.rawData);
+  const selectedKey = state.selectedSprintKey;
 
-  const totalBot = squadsWithData.reduce((sum, s) => sum + state.squadStats[s].totalBot, 0);
-  const sprintsCount = sprintsAll.length;
-  const activeSquads = squadsWithData.filter(s => state.squadStats[s].totalBot > 0).length;
-  const avgPct = squadsWithData.length > 0
-    ? squadsWithData.reduce((sum, s) => sum + state.squadStats[s].pct, 0) / squadsWithData.length
+  // Validar que el filtro sigue siendo valido; si no, resetear.
+  if (selectedKey && !sprintsAll.find(s => s.startDate === selectedKey)) {
+    state.selectedSprintKey = null;
+  }
+  const activeKey = state.selectedSprintKey;
+
+  // Squads que tienen al menos un sprint bajo el filtro activo.
+  const squadsWithData = SQUADS.filter(squad => {
+    const sp = filteredSquadSprints(state.rawData, squad, activeKey);
+    return sp.length > 0;
+  });
+
+  // KPIs agregados (respetando el filtro).
+  const statsByFilter = squadsWithData.map(s => computeSquadStatsFiltered(state.rawData, s, activeKey));
+  const totalBot = statsByFilter.reduce((sum, st) => sum + st.totalBot, 0);
+  const totalAll = statsByFilter.reduce((sum, st) => sum + st.totalAll, 0);
+  const activeSquads = statsByFilter.filter(st => st.totalBot > 0).length;
+  const avgPct = statsByFilter.length > 0
+    ? statsByFilter.reduce((sum, st) => sum + st.pct, 0) / statsByFilter.length
     : 0;
+  const sprintsCount = activeKey ? 1 : sprintsAll.length;
 
-  const firstSprint = sprintsAll[0];
-  const lastSprint = sprintsAll[sprintsAll.length - 1];
-  const subtitle = sprintsAll.length > 0
-    ? `Desde ${new Date(firstSprint.startDate).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })} hasta ${new Date(lastSprint.startDate).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })} · ${sprintsCount} sprints`
-    : 'Sin sprints analizados';
+  // Subtitulo dinamico.
+  let subtitle;
+  if (sprintsAll.length === 0) {
+    subtitle = 'Sin sprints analizados';
+  } else if (activeKey) {
+    const sprintInfo = sprintsAll.find(s => s.startDate === activeKey);
+    subtitle = `Sprint del ${sprintLabel(sprintInfo)} · ${squadsWithData.length} squads activos`;
+  } else {
+    const f = sprintsAll[0], l = sprintsAll[sprintsAll.length - 1];
+    const fmt = d => new Date(d).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
+    subtitle = `Desde ${fmt(f.startDate)} hasta ${fmt(l.startDate)} · ${sprintsAll.length} sprints`;
+  }
+
+  // Opciones del dropdown: "Todos" + cada sprint chronologico (mas reciente arriba).
+  const sortedForDropdown = [...sprintsAll].sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+  const options = [
+    `<option value="">Todos los sprints</option>`,
+    ...sortedForDropdown.map(s =>
+      `<option value="${s.startDate}" ${s.startDate === activeKey ? 'selected' : ''}>${s.label} · ${sprintLabel(s)}</option>`
+    )
+  ].join('');
 
   document.getElementById('view-global').innerHTML = `
     <div class="view-header">
@@ -465,13 +559,18 @@ function renderGlobalView() {
       <div class="subtitle">${subtitle}</div>
     </div>
 
+    <div class="filter-bar">
+      <label for="sprint-filter">Filtrar por sprint:</label>
+      <select id="sprint-filter">${options}</select>
+    </div>
+
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="label">Tasks del bot</div>
-        <div class="value">${totalBot.toLocaleString('es-AR')}</div>
+        <div class="value">${totalBot.toLocaleString('es-AR')}<span style="font-size:16px;color:var(--text-muted)"> / ${totalAll.toLocaleString('es-AR')}</span></div>
       </div>
       <div class="kpi-card">
-        <div class="label">Sprints analizados</div>
+        <div class="label">${activeKey ? 'Sprint' : 'Sprints analizados'}</div>
         <div class="value">${sprintsCount}</div>
       </div>
       <div class="kpi-card">
@@ -490,28 +589,34 @@ function renderGlobalView() {
     </div>
 
     <div class="chart-card">
-      <h2>Ranking de squads</h2>
+      <h2>Ranking de squads${activeKey ? ' (sprint seleccionado)' : ''}</h2>
       <div class="chart-canvas-wrap tall"><canvas id="chart-ranking"></canvas></div>
     </div>
 
     <div class="rank-grid">
       <div class="chart-card rank-card">
-        <h2>Top 3 del sprint actual</h2>
+        <h2>Top 3 ${activeKey ? 'del sprint seleccionado' : 'del último sprint'}</h2>
         <div id="top-rows"></div>
       </div>
       <div class="chart-card rank-card">
-        <h2>Bottom 3 del sprint actual</h2>
+        <h2>Bottom 3 ${activeKey ? 'del sprint seleccionado' : 'del último sprint'}</h2>
         <div id="bottom-rows"></div>
       </div>
     </div>
   `;
 
-  renderTrendChart(sprintsAll);
-  renderRankingChart(squadsWithData);
-  renderTopBottom(sprintsAll, squadsWithData);
+  // Event listener del dropdown.
+  document.getElementById('sprint-filter').addEventListener('change', (e) => {
+    state.selectedSprintKey = e.target.value || null;
+    renderGlobalView();
+  });
+
+  renderTrendChart(sprintsAll, activeKey);
+  renderRankingChart(squadsWithData, statsByFilter);
+  renderTopBottom(sprintsAll, squadsWithData, activeKey);
 }
 
-function renderTrendChart(sprintsAll) {
+function renderTrendChart(sprintsAll, highlightKey) {
   const ctx = document.getElementById('chart-trend');
   if (!ctx) return;
 
@@ -520,6 +625,10 @@ function renderTrendChart(sprintsAll) {
     const avg = avgAdoptionForSprint(state.rawData, s.startDate);
     return avg == null ? null : Number(avg.toFixed(1));
   });
+
+  // Resaltar el punto del sprint seleccionado (si hay filtro).
+  const pointRadius = sprintsAll.map(s => s.startDate === highlightKey ? 8 : 4);
+  const pointBg = sprintsAll.map(s => s.startDate === highlightKey ? '#f59e0b' : '#2563eb');
 
   state.charts.trend = new Chart(ctx, {
     type: 'line',
@@ -531,8 +640,8 @@ function renderTrendChart(sprintsAll) {
         borderColor: '#2563eb',
         backgroundColor: 'rgba(37, 99, 235, 0.1)',
         borderWidth: 2,
-        pointRadius: 4,
-        pointBackgroundColor: '#2563eb',
+        pointRadius,
+        pointBackgroundColor: pointBg,
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
         tension: 0.3,
@@ -563,17 +672,20 @@ function renderTrendChart(sprintsAll) {
   });
 }
 
-function renderRankingChart(squadsWithData) {
+function renderRankingChart(squadsWithData, statsByFilter) {
   const ctx = document.getElementById('chart-ranking');
   if (!ctx) return;
 
-  const ranked = [...squadsWithData]
-    .filter(s => state.squadStats[s].totalBot > 0)
-    .sort((a, b) => state.squadStats[b].pct - state.squadStats[a].pct);
+  // Combinar squad + stats en pairs y ordenar por pct descendente.
+  const pairs = squadsWithData
+    .map((sq, i) => ({ squad: sq, stats: statsByFilter[i] }))
+    .filter(p => p.stats.totalBot > 0)
+    .sort((a, b) => b.stats.pct - a.stats.pct);
 
-  const labels = ranked;
-  const data = ranked.map(s => Number(state.squadStats[s].pct.toFixed(1)));
+  const labels = pairs.map(p => p.squad);
+  const data = pairs.map(p => Number(p.stats.pct.toFixed(1)));
   const colors = data.map(pctColor);
+  const statsMap = Object.fromEntries(pairs.map(p => [p.squad, p.stats]));
 
   state.charts.ranking = new Chart(ctx, {
     type: 'bar',
@@ -592,7 +704,7 @@ function renderRankingChart(squadsWithData) {
           callbacks: {
             label: c => {
               const squad = c.label;
-              const st = state.squadStats[squad];
+              const st = statsMap[squad];
               return `${c.parsed.x}% (${st.totalBot}/${st.totalAll})`;
             }
           }
@@ -613,13 +725,14 @@ function renderRankingChart(squadsWithData) {
   });
 }
 
-function renderTopBottom(sprintsAll, squadsWithData) {
-  const lastSprint = sprintsAll[sprintsAll.length - 1];
-  if (!lastSprint) return;
+function renderTopBottom(sprintsAll, squadsWithData, activeKey) {
+  // Si hay filtro usamos ese sprint; si no, el ultimo cronologico.
+  const refKey = activeKey || (sprintsAll[sprintsAll.length - 1]?.startDate);
+  if (!refKey) return;
 
-  const pairs = squadsWithData
+  const pairs = SQUADS
     .map(squad => {
-      const sprint = (state.rawData.squads[squad]?.sprints || []).find(s => s.startDate === lastSprint.startDate);
+      const sprint = (state.rawData.squads[squad]?.sprints || []).find(s => s.startDate === refKey);
       if (!sprint || sprint.totalCount === 0) return null;
       return { squad, pct: sprintPct(sprint) };
     })
@@ -630,7 +743,7 @@ function renderTopBottom(sprintsAll, squadsWithData) {
 
   function renderRows(containerId, rows) {
     document.getElementById(containerId).innerHTML = rows.length === 0
-      ? `<div style="color:var(--text-muted);font-size:13px;padding:12px 0">Sin datos en el último sprint</div>`
+      ? `<div style="color:var(--text-muted);font-size:13px;padding:12px 0">Sin datos en este sprint</div>`
       : rows.map(r => `
         <div class="rank-row">
           <span class="squad-name">${r.squad}</span>
