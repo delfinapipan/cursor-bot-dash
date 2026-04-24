@@ -46,20 +46,56 @@ async function jiraFetch(path, options = {}) {
   return res.json();
 }
 
+// Cache global con todos los boards del tenant (se carga una sola vez en main).
+let ALL_BOARDS = null;
+
+async function loadAllBoards() {
+  if (ALL_BOARDS) return ALL_BOARDS;
+  const all = [];
+  let startAt = 0;
+  const pageSize = 50;
+  while (true) {
+    const data = await jiraFetch(`/rest/agile/1.0/board?startAt=${startAt}&maxResults=${pageSize}`);
+    const values = data.values || [];
+    all.push(...values);
+    if (data.isLast || values.length < pageSize) break;
+    startAt += pageSize;
+    if (startAt > 5000) break;
+  }
+  ALL_BOARDS = all;
+  console.log(`Loaded ${all.length} boards total`);
+  return all;
+}
+
 async function getBoardId(squad) {
-  // Preferimos scrum (tienen sprints). Si no hay, caemos a cualquier board
-  // del proyecto — getSprints se ocupara de devolver [] si el board no tiene sprints.
-  const scrum = await jiraFetch(
-    `/rest/agile/1.0/board?projectKeyOrId=${squad}&type=scrum&maxResults=50`
-  );
-  if (scrum.values && scrum.values.length > 0) return scrum.values[0].id;
+  // 1er intento: filtro directo scrum por proyecto (team-managed projects).
+  try {
+    const scrum = await jiraFetch(
+      `/rest/agile/1.0/board?projectKeyOrId=${squad}&type=scrum&maxResults=50`
+    );
+    if (scrum.values && scrum.values.length > 0) return scrum.values[0].id;
+  } catch (e) { /* seguimos con fallback */ }
 
-  const any = await jiraFetch(
-    `/rest/agile/1.0/board?projectKeyOrId=${squad}&maxResults=50`
-  );
-  if (any.values && any.values.length > 0) return any.values[0].id;
+  // 2do intento: cualquier tipo de board por proyecto.
+  try {
+    const any = await jiraFetch(
+      `/rest/agile/1.0/board?projectKeyOrId=${squad}&maxResults=50`
+    );
+    if (any.values && any.values.length > 0) return any.values[0].id;
+  } catch (e) { /* seguimos con fallback */ }
 
-  return null;
+  // 3er intento: buscar en todos los boards del tenant, matcheando por
+  // location.projectKey (asi aparecen company-managed boards asociados al proyecto).
+  const allBoards = await loadAllBoards();
+  const matches = allBoards.filter(b =>
+    b.location?.projectKey === squad ||
+    b.location?.projectName?.includes(squad) ||
+    b.name?.includes(squad)
+  );
+  if (matches.length === 0) return null;
+  // Priorizamos scrum si hay multiple.
+  const scrumMatch = matches.find(b => b.type === 'scrum');
+  return (scrumMatch || matches[0]).id;
 }
 
 async function getSprints(boardId) {
@@ -68,9 +104,18 @@ async function getSprints(boardId) {
   let startAt = 0;
   const pageSize = 50;
   while (true) {
-    const data = await jiraFetch(
-      `/rest/agile/1.0/board/${boardId}/sprint?state=closed,active&startAt=${startAt}&maxResults=${pageSize}`
-    );
+    let data;
+    try {
+      data = await jiraFetch(
+        `/rest/agile/1.0/board/${boardId}/sprint?state=closed,active&startAt=${startAt}&maxResults=${pageSize}`
+      );
+    } catch (err) {
+      // Board no soporta sprints (kanban) — devolvemos lo que tengamos.
+      if (err.message.includes('does not support sprints') || err.message.includes('400')) {
+        return [];
+      }
+      throw err;
+    }
     const values = data.values || [];
     all.push(...values);
     if (data.isLast || values.length < pageSize) break;
