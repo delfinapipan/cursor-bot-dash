@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor Bot Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --border: #e5e5e5;
+      --border-strong: #d4d4d4;
+      --text-primary: #0a0a0a;
+      --text-secondary: #525252;
+      --text-muted: #a3a3a3;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.08);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ────────────────────────────────────────── */
+    #sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 20px 20px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo span { color: var(--accent); }
+
+    .sidebar-section-label {
+      padding: 16px 20px 6px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 12px;
+      margin: 0 8px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background 120ms, color 120ms;
+      user-select: none;
+    }
+
+    .sidebar-item:hover { background: #f5f5f5; color: var(--text-primary); }
+
+    .sidebar-item.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .sidebar-item .pct {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sidebar-item.active .pct { color: var(--accent); }
+
+    .sidebar-item.no-data { color: var(--text-muted); }
+
+    .sidebar-timestamp {
+      margin-top: auto;
+      padding: 16px 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Main ───────────────────────────────────────────── */
+    #main {
+      flex: 1;
+      padding: 32px 40px;
+      max-width: 1400px;
+    }
+
+    .view-header {
+      margin-bottom: 28px;
+    }
+
+    .view-header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .view-header .subtitle {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── KPI cards ──────────────────────────────────────── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .kpi-card .label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .kpi-card .value {
+      font-size: 32px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-card .delta {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .kpi-card .delta.up { color: var(--success); }
+    .kpi-card .delta.down { color: var(--danger); }
+    .kpi-card .delta.flat { color: var(--text-muted); }
+
+    /* ── Chart cards ────────────────────────────────────── */
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .chart-card h2 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .chart-canvas-wrap {
+      position: relative;
+      height: 280px;
+    }
+
+    .chart-canvas-wrap.tall { height: 420px; }
+
+    /* ── Top / Bottom ────────────────────────────────────── */
+    .rank-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .rank-card h2 { margin-bottom: 12px; }
+
+    .rank-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rank-row:last-child { border-bottom: none; }
+
+    .rank-row .squad-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .rank-row .rank-pct {
+      font-size: 14px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rank-row .rank-pct.high { color: var(--success); }
+    .rank-row .rank-pct.med { color: var(--accent); }
+    .rank-row .rank-pct.low { color: var(--warning); }
+
+    /* ── Loading state ──────────────────────────────────── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .loading-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+
+    .loading-sub { font-size: 12px; color: var(--text-muted); max-width: 400px; text-align: center; }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Error state ────────────────────────────────────── */
+    .error-banner {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid var(--warning);
+      color: #92400e;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* ── Utils ──────────────────────────────────────────── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="sidebar-logo">Cursor <span>Bot</span></div>
+  <div class="sidebar-section-label">General</div>
+  <div class="sidebar-item active" data-view="global">
+    <span>Global</span>
+  </div>
+  <div class="sidebar-section-label">Squads</div>
+  <div id="sidebar-squads"></div>
+  <div id="sidebar-timestamp" class="sidebar-timestamp"></div>
+</aside>
+
+<main id="main">
+  <div id="view-global"></div>
+  <div id="view-squad" class="hidden"></div>
+</main>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Cargando datos...</div>
+  <div class="loading-sub" id="loading-sub">Un momento</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────────────────────
+const SQUADS = [
+  'SQZB', 'SQSQ', 'SQSH', 'SQRN', 'SQRC', 'SQPM', 'SQPD',
+  'SQOW', 'SQOT', 'SQKA', 'SQJG', 'SQGZ', 'SQEG', 'SQDP',
+  'SQXS', 'SQCY', 'SQWH'
+];
+
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
+const state = {
+  rawData: null,
+  squadStats: {},
+  currentView: 'global',
+  charts: {}
+};
+
+// ─────────────────────────────────────────────────────────────
+// COMPUTATIONS
+// ─────────────────────────────────────────────────────────────
+
+function computeSquadStats(squadData) {
+  const sprints = squadData.sprints || [];
+  const totalBot = sprints.reduce((s, x) => s + x.botCount, 0);
+  const totalAll = sprints.reduce((s, x) => s + x.totalCount, 0);
+  const pct = totalAll > 0 ? (totalBot / totalAll) * 100 : 0;
+  return { totalBot, totalAll, pct, sprintCount: sprints.length };
+}
+
+function sprintPct(sprint) {
+  return sprint.totalCount > 0 ? (sprint.botCount / sprint.totalCount) * 100 : 0;
+}
+
+function allSprintsChrono(rawData) {
+  const map = new Map();
+  for (const squad of SQUADS) {
+    const sprints = rawData.squads[squad]?.sprints || [];
+    for (const s of sprints) {
+      if (!map.has(s.startDate)) {
+        map.set(s.startDate, { startDate: s.startDate, endDate: s.endDate, label: null });
+      }
+    }
+  }
+  const arr = Array.from(map.values())
+    .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+  arr.forEach((s, i) => { s.label = `S${i + 1}`; });
+  return arr;
+}
+
+function avgAdoptionForSprint(rawData, startDate) {
+  const pcts = [];
+  for (const squad of SQUADS) {
+    const sprint = (rawData.squads[squad]?.sprints || []).find(s => s.startDate === startDate);
+    if (sprint && sprint.totalCount > 0) pcts.push(sprintPct(sprint));
+  }
+  if (pcts.length === 0) return null;
+  return pcts.reduce((a, b) => a + b, 0) / pcts.length;
+}
+
+function formatPct(n) {
+  return n == null ? '--' : `${n.toFixed(0)}%`;
+}
+
+function pctColorClass(pct) {
+  if (pct == null) return '';
+  if (pct >= 75) return 'high';
+  if (pct >= 50) return 'med';
+  return 'low';
+}
+
+function pctColor(pct) {
+  if (pct >= 75) return '#10b981';
+  if (pct >= 50) return '#2563eb';
+  return '#f59e0b';
+}
+
+// ─────────────────────────────────────────────────────────────
+// RENDER — sidebar
+// ─────────────────────────────────────────────────────────────
+
+function renderSidebarSquads() {
+  const container = document.getElementById('sidebar-squads');
+  const withStats = SQUADS.map(squad => ({
+    squad,
+    stats: state.squadStats[squad],
+    hasData: (state.rawData.squads[squad]?.sprints || []).length > 0
+  }));
+
+  withStats.sort((a, b) => {
+    if (a.hasData && !b.hasData) return -1;
+    if (!a.hasData && b.hasData) return 1;
+    return (b.stats?.pct || 0) - (a.stats?.pct || 0);
+  });
+
+  container.innerHTML = withStats.map(({ squad, stats, hasData }) => {
+    const pct = hasData ? formatPct(stats.pct) : '--';
+    const cls = hasData ? '' : 'no-data';
+    return `
+      <div class="sidebar-item ${cls}" data-view="${squad}">
+        <span>${squad}</span>
+        <span class="pct">${pct}</span>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.sidebar-item').forEach(el => {
+    el.addEventListener('click', () => switchView(el.dataset.view));
+  });
+  document.querySelector('[data-view="global"]').addEventListener('click', () => switchView('global'));
+}
+
+function renderTimestamp() {
+  const el = document.getElementById('sidebar-timestamp');
+  if (!state.rawData?.lastUpdated) { el.textContent = ''; return; }
+  const d = new Date(state.rawData.lastUpdated);
+  el.textContent = `Actualizado: ${d.toLocaleString('es-AR', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  })}`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// RENDER — vista global
+// ─────────────────────────────────────────────────────────────
+
+function renderGlobalView() {
+  destroyAllCharts();
+
+  const squadsWithData = SQUADS.filter(s => state.squadStats[s]?.sprintCount > 0);
+  const sprintsAll = allSprintsChrono(state.rawData);
+
+  const totalBot = squadsWithData.reduce((sum, s) => sum + state.squadStats[s].totalBot, 0);
+  const sprintsCount = sprintsAll.length;
+  const activeSquads = squadsWithData.filter(s => state.squadStats[s].totalBot > 0).length;
+  const avgPct = squadsWithData.length > 0
+    ? squadsWithData.reduce((sum, s) => sum + state.squadStats[s].pct, 0) / squadsWithData.length
+    : 0;
+
+  const firstSprint = sprintsAll[0];
+  const lastSprint = sprintsAll[sprintsAll.length - 1];
+  const subtitle = sprintsAll.length > 0
+    ? `Desde ${new Date(firstSprint.startDate).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })} hasta ${new Date(lastSprint.startDate).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' })} · ${sprintsCount} sprints`
+    : 'Sin sprints analizados';
+
+  document.getElementById('view-global').innerHTML = `
+    <div class="view-header">
+      <h1>Adopción del Cursor Bot</h1>
+      <div class="subtitle">${subtitle}</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">Tasks del bot</div>
+        <div class="value">${totalBot.toLocaleString('es-AR')}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Sprints analizados</div>
+        <div class="value">${sprintsCount}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Squads activos</div>
+        <div class="value">${activeSquads}<span style="font-size:16px;color:var(--text-muted)"> / ${SQUADS.length}</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Adopción promedio</div>
+        <div class="value">${formatPct(avgPct)}</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h2>Tendencia de adopción global</h2>
+      <div class="chart-canvas-wrap"><canvas id="chart-trend"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h2>Ranking de squads</h2>
+      <div class="chart-canvas-wrap tall"><canvas id="chart-ranking"></canvas></div>
+    </div>
+
+    <div class="rank-grid">
+      <div class="chart-card rank-card">
+        <h2>Top 3 del sprint actual</h2>
+        <div id="top-rows"></div>
+      </div>
+      <div class="chart-card rank-card">
+        <h2>Bottom 3 del sprint actual</h2>
+        <div id="bottom-rows"></div>
+      </div>
+    </div>
+  `;
+
+  renderTrendChart(sprintsAll);
+  renderRankingChart(squadsWithData);
+  renderTopBottom(sprintsAll, squadsWithData);
+}
+
+function renderTrendChart(sprintsAll) {
+  const ctx = document.getElementById('chart-trend');
+  if (!ctx) return;
+
+  const labels = sprintsAll.map(s => s.label);
+  const data = sprintsAll.map(s => {
+    const avg = avgAdoptionForSprint(state.rawData, s.startDate);
+    return avg == null ? null : Number(avg.toFixed(1));
+  });
+
+  state.charts.trend = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: '% adopción promedio',
+        data,
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: '#2563eb',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        tension: 0.3,
+        fill: true,
+        spanGaps: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 400 },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => `${c.parsed.y}%` } }
+      },
+      scales: {
+        y: {
+          beginAtZero: true, max: 100,
+          grid: { color: '#e5e5e5', drawBorder: false },
+          ticks: { callback: v => `${v}%`, color: '#737373', font: { size: 11 } }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#737373', font: { size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+function renderRankingChart(squadsWithData) {
+  const ctx = document.getElementById('chart-ranking');
+  if (!ctx) return;
+
+  const ranked = [...squadsWithData]
+    .filter(s => state.squadStats[s].totalBot > 0)
+    .sort((a, b) => state.squadStats[b].pct - state.squadStats[a].pct);
+
+  const labels = ranked;
+  const data = ranked.map(s => Number(state.squadStats[s].pct.toFixed(1)));
+  const colors = data.map(pctColor);
+
+  state.charts.ranking = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data, backgroundColor: colors, borderRadius: 4, barThickness: 18 }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 400 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => {
+              const squad = c.label;
+              const st = state.squadStats[squad];
+              return `${c.parsed.x}% (${st.totalBot}/${st.totalAll})`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true, max: 100,
+          grid: { color: '#e5e5e5', drawBorder: false },
+          ticks: { callback: v => `${v}%`, color: '#737373', font: { size: 11 } }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: '#525252', font: { size: 12, weight: '500' } }
+        }
+      }
+    }
+  });
+}
+
+function renderTopBottom(sprintsAll, squadsWithData) {
+  const lastSprint = sprintsAll[sprintsAll.length - 1];
+  if (!lastSprint) return;
+
+  const pairs = squadsWithData
+    .map(squad => {
+      const sprint = (state.rawData.squads[squad]?.sprints || []).find(s => s.startDate === lastSprint.startDate);
+      if (!sprint || sprint.totalCount === 0) return null;
+      return { squad, pct: sprintPct(sprint) };
+    })
+    .filter(Boolean);
+
+  const top = [...pairs].sort((a, b) => b.pct - a.pct).slice(0, 3);
+  const bottom = [...pairs].sort((a, b) => a.pct - b.pct).slice(0, 3);
+
+  function renderRows(containerId, rows) {
+    document.getElementById(containerId).innerHTML = rows.length === 0
+      ? `<div style="color:var(--text-muted);font-size:13px;padding:12px 0">Sin datos en el último sprint</div>`
+      : rows.map(r => `
+        <div class="rank-row">
+          <span class="squad-name">${r.squad}</span>
+          <span class="rank-pct ${pctColorClass(r.pct)}">${formatPct(r.pct)}</span>
+        </div>
+      `).join('');
+  }
+
+  renderRows('top-rows', top);
+  renderRows('bottom-rows', bottom);
+}
+
+// ─────────────────────────────────────────────────────────────
+// RENDER — vista de squad
+// ─────────────────────────────────────────────────────────────
+
+function renderSquadView(squad) {
+  destroyAllCharts();
+
+  const squadData = state.rawData.squads[squad];
+  const viewEl = document.getElementById('view-squad');
+
+  if (!squadData || (squadData.sprints.length === 0 && squadData.error)) {
+    viewEl.innerHTML = `
+      <div class="view-header">
+        <h1>${squad}</h1>
+        <div class="subtitle">Sin datos disponibles</div>
+      </div>
+      <div class="error-banner">${squadData?.error || 'Squad sin información'}</div>
+    `;
+    return;
+  }
+
+  const sprints = squadData.sprints;
+  const stats = state.squadStats[squad];
+  const last = sprints[sprints.length - 1];
+  const prev = sprints[sprints.length - 2];
+  const lastPct = last ? sprintPct(last) : 0;
+  const prevPct = prev ? sprintPct(prev) : null;
+  const delta = prevPct == null ? null : lastPct - prevPct;
+
+  const deltaHtml = delta == null
+    ? `<div class="delta flat">—</div>`
+    : `<div class="delta ${delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat'}">
+         ${delta > 0 ? '▲' : delta < 0 ? '▼' : '■'} ${Math.abs(delta).toFixed(1)} pts
+       </div>`;
+
+  viewEl.innerHTML = `
+    <div class="view-header">
+      <h1>${squad}</h1>
+      <div class="subtitle">${sprints.length} sprints analizados</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">Tasks del bot</div>
+        <div class="value">${stats.totalBot}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Total tasks</div>
+        <div class="value">${stats.totalAll}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">% adopción</div>
+        <div class="value">${formatPct(stats.pct)}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Último sprint</div>
+        <div class="value">${formatPct(lastPct)}</div>
+        ${deltaHtml}
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h2>Evolución por sprint</h2>
+      <div class="chart-canvas-wrap tall"><canvas id="chart-squad"></canvas></div>
+    </div>
+  `;
+
+  renderSquadChart(squad, sprints);
+}
+
+function renderSquadChart(squad, sprints) {
+  const ctx = document.getElementById('chart-squad');
+  if (!ctx) return;
+
+  const labels = sprints.map((_, i) => `S${i + 1}`);
+  const botData = sprints.map(s => s.botCount);
+  const pctData = sprints.map(s => Number(sprintPct(s).toFixed(1)));
+
+  state.charts.squad = new Chart(ctx, {
+    data: {
+      labels,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Tasks del bot',
+          data: botData,
+          backgroundColor: '#2563eb',
+          borderRadius: 4,
+          yAxisID: 'y',
+          order: 2
+        },
+        {
+          type: 'line',
+          label: '% adopción',
+          data: pctData,
+          borderColor: '#10b981',
+          backgroundColor: '#10b981',
+          borderWidth: 2,
+          pointRadius: 4,
+          pointBackgroundColor: '#10b981',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          yAxisID: 'y1',
+          tension: 0.3,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 400 },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top', align: 'end',
+          labels: { boxWidth: 10, boxHeight: 10, font: { size: 12 }, color: '#525252' }
+        },
+        tooltip: {
+          callbacks: {
+            label: c => {
+              const sprint = sprints[c.dataIndex];
+              if (c.dataset.type === 'bar') {
+                return `${c.dataset.label}: ${c.parsed.y} (total ${sprint.totalCount})`;
+              }
+              return `${c.dataset.label}: ${c.parsed.y}%`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          type: 'linear', position: 'left', beginAtZero: true,
+          grid: { color: '#e5e5e5', drawBorder: false },
+          ticks: { color: '#737373', font: { size: 11 } },
+          title: { display: true, text: 'Tasks del bot', color: '#737373', font: { size: 11 } }
+        },
+        y1: {
+          type: 'linear', position: 'right', beginAtZero: true, max: 100,
+          grid: { display: false },
+          ticks: { callback: v => `${v}%`, color: '#737373', font: { size: 11 } },
+          title: { display: true, text: '% adopción', color: '#737373', font: { size: 11 } }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#737373', font: { size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// VIEW SWITCHING
+// ─────────────────────────────────────────────────────────────
+
+function switchView(view) {
+  state.currentView = view;
+  document.querySelectorAll('.sidebar-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.view === view);
+  });
+  if (view === 'global') {
+    document.getElementById('view-global').classList.remove('hidden');
+    document.getElementById('view-squad').classList.add('hidden');
+    renderGlobalView();
+  } else {
+    document.getElementById('view-global').classList.add('hidden');
+    document.getElementById('view-squad').classList.remove('hidden');
+    renderSquadView(view);
+  }
+}
+
+function destroyAllCharts() {
+  Object.values(state.charts).forEach(c => c?.destroy?.());
+  state.charts = {};
+}
+
+// ─────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────
+
+async function boot() {
+  try {
+    let res = await fetch('./data.json');
+    if (!res.ok) {
+      console.warn('data.json no disponible, usando data.sample.json');
+      res = await fetch('./data.sample.json');
+      if (!res.ok) throw new Error('No hay data.json ni data.sample.json. El workflow de GitHub Actions aún no corrió — triggerealo manualmente desde la pestaña Actions.');
+    }
+
+    state.rawData = await res.json();
+
+    for (const squad of SQUADS) {
+      const sq = state.rawData.squads[squad];
+      if (sq) state.squadStats[squad] = computeSquadStats(sq);
+    }
+
+    renderSidebarSquads();
+    renderTimestamp();
+    renderGlobalView();
+
+    document.getElementById('loading').classList.add('hidden');
+  } catch (err) {
+    document.getElementById('loading-text').textContent = 'Sin datos todavía';
+    document.getElementById('loading-sub').textContent = err.message;
+    const spinner = document.querySelector('#loading .spinner');
+    if (spinner) spinner.style.display = 'none';
+    console.error(err);
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
