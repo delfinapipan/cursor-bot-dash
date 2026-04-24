@@ -58,7 +58,7 @@ El workflow corre cada 6 horas (y también se puede disparar manualmente). Trae 
 | Dashboard muestra "Sin datos todavía" | El workflow aún no corrió. Andá a Actions y triggerealo manualmente |
 | Workflow falla con `Jira 401` | El token expiró o está mal. Regenerá y actualizá el secret `JIRA_TOKEN` |
 | Workflow falla con `Jira 403` | Tu usuario de Jira no tiene permisos para leer algún squad. Revisá acceso |
-| Un squad aparece en gris con `--` | Ese squad no tiene board Scrum en Jira o no tuvo sprints desde 24-feb-2025 |
+| Un squad aparece en gris con `--` | Ese squad no tiene board Scrum en Jira o no tuvo sprints desde 24-feb-2026 |
 | No se actualizan los datos | El workflow puede haber fallado. Revisá Actions → último run |
 
 ## Squads monitoreados
@@ -67,6 +67,6 @@ El workflow corre cada 6 horas (y también se puede disparar manualmente). Trae 
 
 ## Criterio de tasks del bot
 
-Tickets de tipo **Subtask**, **Sub-task** o **Dev Task**, estado **Done**, asignados al usuario **Cursor Bot**, desde el sprint que arrancó el **24 de febrero de 2025**.
+Tickets de tipo **Subtask**, **Sub-task** o **Dev Task**, estado **Done**, asignados al usuario **Cursor Bot**, desde el sprint que arrancó el **24 de febrero de 2026**.
 
 Adopción = `tasks del bot / total tasks del mismo tipo en el sprint × 100`.

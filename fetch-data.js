@@ -5,7 +5,7 @@ const BASE_URL    = 'https://humand.atlassian.net';
 // .trim() por si el secret se guardo con un whitespace/newline accidental
 const TOKEN       = (process.env.JIRA_TOKEN || '').trim();
 const BOT_ACCOUNT = '712020:98b3a270-fe83-4788-9d35-e5b5611a7a64';
-const START_DATE  = '2025-02-24';
+const START_DATE  = '2026-02-24';
 const SQUADS = [
   'SQZB', 'SQSQ', 'SQSH', 'SQRN', 'SQRC', 'SQPM', 'SQPD',
   'SQOW', 'SQOT', 'SQKA', 'SQJG', 'SQGZ', 'SQEG', 'SQDP',
