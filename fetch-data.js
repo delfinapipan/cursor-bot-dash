@@ -22,30 +22,44 @@ console.log(`JIRA_TOKEN cargado: ${TOKEN.length} chars`);
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
-async function jiraFetch(path, retryOnce = true) {
+async function jiraFetch(path, options = {}) {
+  const { method = 'GET', body = null, retryOnce = true } = options;
+  const headers = {
+    'Authorization': `Basic ${TOKEN}`,
+    'Accept': 'application/json'
+  };
+  if (body) headers['Content-Type'] = 'application/json';
+
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: {
-      'Authorization': `Basic ${TOKEN}`,
-      'Accept': 'application/json'
-    }
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined
   });
   if (!res.ok) {
     if (retryOnce && res.status >= 500) {
       await new Promise(r => setTimeout(r, 1000));
-      return jiraFetch(path, false);
+      return jiraFetch(path, { method, body, retryOnce: false });
     }
-    const body = await res.text().catch(() => '');
-    throw new Error(`Jira ${res.status} → ${path.split('?')[0]}${body ? ` :: ${body.slice(0, 200)}` : ''}`);
+    const errText = await res.text().catch(() => '');
+    throw new Error(`Jira ${res.status} → ${path.split('?')[0]}${errText ? ` :: ${errText.slice(0, 200)}` : ''}`);
   }
   return res.json();
 }
 
 async function getBoardId(squad) {
-  const data = await jiraFetch(
-    `/rest/agile/1.0/board?projectKeyOrId=${squad}&type=scrum&maxResults=1`
+  // Preferimos scrum (tienen sprints). Si no hay, caemos a cualquier board
+  // del proyecto — getSprints se ocupara de devolver [] si el board no tiene sprints.
+  const scrum = await jiraFetch(
+    `/rest/agile/1.0/board?projectKeyOrId=${squad}&type=scrum&maxResults=50`
   );
-  if (!data.values || data.values.length === 0) return null;
-  return data.values[0].id;
+  if (scrum.values && scrum.values.length > 0) return scrum.values[0].id;
+
+  const any = await jiraFetch(
+    `/rest/agile/1.0/board?projectKeyOrId=${squad}&maxResults=50`
+  );
+  if (any.values && any.values.length > 0) return any.values[0].id;
+
+  return null;
 }
 
 async function getSprints(boardId) {
@@ -78,10 +92,12 @@ async function getSprints(boardId) {
 async function getIssueCount(squad, sprintId, botOnly) {
   const assigneeClause = botOnly ? ` AND assignee = "${BOT_ACCOUNT}"` : '';
   const jql = `project = "${squad}" AND issuetype in (Subtask, "Sub-task", "Dev Task") AND status = Done AND sprint = ${sprintId}${assigneeClause}`;
+  // API vieja (/rest/api/3/search) fue deprecada — usar approximate-count.
   const data = await jiraFetch(
-    `/rest/api/3/search?jql=${encodeURIComponent(jql)}&maxResults=0&fields=id`
+    `/rest/api/3/search/approximate-count`,
+    { method: 'POST', body: { jql } }
   );
-  return data.total || 0;
+  return data.count || 0;
 }
 
 async function loadSquad(squad) {
