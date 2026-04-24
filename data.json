@@ -1,73 +1,73 @@
 {
-  "lastUpdated": "2026-04-24T15:11:34.060Z",
+  "lastUpdated": "2026-04-24T15:19:54.712Z",
   "squads": {
     "SQZB": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQSQ": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQSH": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQRN": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQRC": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQPM": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQPD": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQOW": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQOT": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQKA": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQJG": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQGZ": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQEG": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQDP": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Jira 410 → /rest/api/3/search :: {\"errorMessages\":[\"The requested API has been removed. Please migrate to the /rest/api/3/search/jql API. A full migration guideline is available at https://developer.atlassian.com/changelog/#CHANGE-20"
     },
     "SQCY": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQWH": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     },
     "SQCC": {
       "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+      "error": "Sin board Scrum"
     }
   }
 }
