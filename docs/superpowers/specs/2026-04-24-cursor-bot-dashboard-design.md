@@ -154,7 +154,7 @@ Cada squad tiene un array `sprints` ordenado cronológicamente. Si un squad no t
 | Tasks del bot | Σ `botCount` de todos los squads, todos los sprints |
 | Sprints analizados | Cantidad de sprints únicos (por `startDate`) cubiertos |
 | Squads activos | Squads con al menos 1 task del bot en algún sprint |
-| Adopción promedio | promedio de (% adopción total de cada squad con datos) |
+| Adopción promedio | promedio simple de (% adopción total de cada squad con datos) |
 
 **Chart 1 — Tendencia de adopción global** (line chart):
 - X: sprints cronológicos (nombre corto, ej. "S1", "S2", ...)
@@ -291,8 +291,7 @@ El script escribe `data.json` con el formato descripto arriba. El workflow commi
 
 - **Sin tokens en el HTML.** El HTML es 100% estático y no tiene credenciales.
 - **El API token de Jira vive como secret `JIRA_TOKEN` en el repo.** Solo lo ve GitHub Actions en runtime. Nunca se imprime en logs.
-- **Repo privado.** La data agregada es sensible (cuántas tareas hace cada squad). Aunque no tenga PII, preferimos que solo usuarios autorizados la vean.
-- **GitHub Pages en repo privado requiere plan Pro** ($4/mes) o upgrade a organización. Si no querés pagar, alternativa: repo público con `data.json` sin nombres internos (solo códigos de squad, como ya es). El riesgo es aceptable si el readme no expone contexto sensible.
+- **Repo público.** Los datos son códigos internos de squad (SQZB, SQSQ, etc.) sin PII ni nombres de personas. Público permite usar GitHub Pages gratis. Si más adelante se prefiere privado, se puede migrar sin rehacer el dashboard (requiere GitHub Pro o una organización con Pages habilitado).
 
 ---
 
@@ -339,7 +338,7 @@ El script escribe `data.json` con el formato descripto arriba. El workflow commi
 
 ## Checklist de setup (para Delfina, al deployar)
 
-1. Crear repo **privado** `cursor-bot-dashboard` en GitHub
+1. Crear repo **público** `cursor-bot-dashboard` en GitHub
 2. Generar un API token nuevo en Jira: https://id.atlassian.com/manage-profile/security/api-tokens
 3. Computar el token base64: `echo -n "delfina.pipan@humand.co:EL_API_TOKEN" | base64`
 4. En el repo: Settings → Secrets and variables → Actions → New repository secret:
