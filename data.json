@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-24T14:55:01.588Z",
+  "lastUpdated": "2026-04-24T15:06:49.285Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -57,15 +57,15 @@
       "sprints": [],
       "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
     },
-    "SQXS": {
-      "sprints": [],
-      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
-    },
     "SQCY": {
       "sprints": [],
       "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
     },
     "SQWH": {
+      "sprints": [],
+      "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
+    },
+    "SQCC": {
       "sprints": [],
       "error": "Jira 401 → /rest/agile/1.0/board :: Client must be authenticated to access this resource."
     }
