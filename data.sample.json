@@ -1,0 +1,113 @@
+{
+  "lastUpdated": "2026-04-24T18:30:00.000Z",
+  "squads": {
+    "SQZB": {
+      "sprints": [
+        { "id": 1001, "name": "SQZB Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 5, "totalCount": 20 },
+        { "id": 1002, "name": "SQZB Sprint 2", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 8, "totalCount": 22 },
+        { "id": 1003, "name": "SQZB Sprint 3", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 12, "totalCount": 25 },
+        { "id": 1004, "name": "SQZB Sprint 4", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 15, "totalCount": 28 }
+      ],
+      "error": null
+    },
+    "SQSQ": {
+      "sprints": [
+        { "id": 2001, "name": "SQSQ Sprint 12", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 2, "totalCount": 18 },
+        { "id": 2002, "name": "SQSQ Sprint 13", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 3, "totalCount": 19 },
+        { "id": 2003, "name": "SQSQ Sprint 14", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 5, "totalCount": 20 },
+        { "id": 2004, "name": "SQSQ Sprint 15", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 6, "totalCount": 21 }
+      ],
+      "error": null
+    },
+    "SQSH": {
+      "sprints": [
+        { "id": 3001, "name": "SQSH Sprint 5", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 10, "totalCount": 15 },
+        { "id": 3002, "name": "SQSH Sprint 6", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 12, "totalCount": 16 },
+        { "id": 3003, "name": "SQSH Sprint 7", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 14, "totalCount": 18 },
+        { "id": 3004, "name": "SQSH Sprint 8", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 16, "totalCount": 20 }
+      ],
+      "error": null
+    },
+    "SQRN": { "sprints": [], "error": "Sin board Scrum" },
+    "SQRC": {
+      "sprints": [
+        { "id": 5001, "name": "SQRC Sprint 1", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 1, "totalCount": 12 },
+        { "id": 5002, "name": "SQRC Sprint 2", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 2, "totalCount": 14 },
+        { "id": 5003, "name": "SQRC Sprint 3", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 4, "totalCount": 15 }
+      ],
+      "error": null
+    },
+    "SQPM": {
+      "sprints": [
+        { "id": 6001, "name": "SQPM Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 3, "totalCount": 14 },
+        { "id": 6002, "name": "SQPM Sprint 2", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 5, "totalCount": 16 },
+        { "id": 6003, "name": "SQPM Sprint 3", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 7, "totalCount": 17 },
+        { "id": 6004, "name": "SQPM Sprint 4", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 9, "totalCount": 18 }
+      ],
+      "error": null
+    },
+    "SQPD": {
+      "sprints": [
+        { "id": 7001, "name": "SQPD Sprint 1", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 2, "totalCount": 10 }
+      ],
+      "error": null
+    },
+    "SQOW": { "sprints": [], "error": "Sin sprints recientes" },
+    "SQOT": {
+      "sprints": [
+        { "id": 9001, "name": "SQOT Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 6, "totalCount": 20 },
+        { "id": 9002, "name": "SQOT Sprint 2", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 8, "totalCount": 22 },
+        { "id": 9003, "name": "SQOT Sprint 3", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 10, "totalCount": 24 },
+        { "id": 9004, "name": "SQOT Sprint 4", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 11, "totalCount": 25 }
+      ],
+      "error": null
+    },
+    "SQKA": {
+      "sprints": [
+        { "id": 10001, "name": "SQKA Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 0, "totalCount": 12 },
+        { "id": 10002, "name": "SQKA Sprint 2", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 1, "totalCount": 13 }
+      ],
+      "error": null
+    },
+    "SQJG": {
+      "sprints": [
+        { "id": 11001, "name": "SQJG Sprint 1", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 4, "totalCount": 11 }
+      ],
+      "error": null
+    },
+    "SQGZ": { "sprints": [], "error": "Sin board Scrum" },
+    "SQEG": {
+      "sprints": [
+        { "id": 13001, "name": "SQEG Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 8, "totalCount": 16 },
+        { "id": 13002, "name": "SQEG Sprint 2", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 9, "totalCount": 17 },
+        { "id": 13003, "name": "SQEG Sprint 3", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 11, "totalCount": 18 },
+        { "id": 13004, "name": "SQEG Sprint 4", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 13, "totalCount": 19 }
+      ],
+      "error": null
+    },
+    "SQDP": {
+      "sprints": [
+        { "id": 14001, "name": "SQDP Sprint 1", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 1, "totalCount": 10 },
+        { "id": 14002, "name": "SQDP Sprint 2", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 3, "totalCount": 12 },
+        { "id": 14003, "name": "SQDP Sprint 3", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 5, "totalCount": 13 }
+      ],
+      "error": null
+    },
+    "SQXS": { "sprints": [], "error": "Sin board Scrum" },
+    "SQCY": {
+      "sprints": [
+        { "id": 16001, "name": "SQCY Sprint 1", "startDate": "2025-02-24T09:00:00.000Z", "endDate": "2025-03-10T09:00:00.000Z", "botCount": 4, "totalCount": 17 },
+        { "id": 16002, "name": "SQCY Sprint 2", "startDate": "2025-03-10T09:00:00.000Z", "endDate": "2025-03-24T09:00:00.000Z", "botCount": 6, "totalCount": 18 },
+        { "id": 16003, "name": "SQCY Sprint 3", "startDate": "2025-03-24T09:00:00.000Z", "endDate": "2025-04-07T09:00:00.000Z", "botCount": 7, "totalCount": 19 },
+        { "id": 16004, "name": "SQCY Sprint 4", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 9, "totalCount": 20 }
+      ],
+      "error": null
+    },
+    "SQWH": {
+      "sprints": [
+        { "id": 17001, "name": "SQWH Sprint 1", "startDate": "2025-04-07T09:00:00.000Z", "endDate": "2025-04-21T09:00:00.000Z", "botCount": 3, "totalCount": 14 }
+      ],
+      "error": null
+    }
+  }
+}
