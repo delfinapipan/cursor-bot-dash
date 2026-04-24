@@ -2,7 +2,8 @@
 // Requiere: Node 20+ y la env var JIRA_TOKEN (base64 de email:api_token)
 
 const BASE_URL    = 'https://humand.atlassian.net';
-const TOKEN       = process.env.JIRA_TOKEN;
+// .trim() por si el secret se guardo con un whitespace/newline accidental
+const TOKEN       = (process.env.JIRA_TOKEN || '').trim();
 const BOT_ACCOUNT = '712020:98b3a270-fe83-4788-9d35-e5b5611a7a64';
 const START_DATE  = '2025-02-24';
 const SQUADS = [
@@ -15,6 +16,9 @@ if (!TOKEN) {
   console.error('ERROR: falta la env var JIRA_TOKEN');
   process.exit(1);
 }
+
+// Log de diagnostico: largo del token (sin imprimirlo)
+console.log(`JIRA_TOKEN cargado: ${TOKEN.length} chars`);
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
