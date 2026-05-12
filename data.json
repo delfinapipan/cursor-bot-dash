@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-12T14:09:43.975Z",
+  "lastUpdated": "2026-05-12T19:43:41.185Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -100,8 +100,8 @@
           "name": "Dolphin 68",
           "startDate": "2026-05-05T15:02:25.049Z",
           "endDate": "2026-05-18T14:25:22.000Z",
-          "botCount": 14,
-          "totalCount": 42
+          "botCount": 16,
+          "totalCount": 44
         }
       ],
       "error": null
