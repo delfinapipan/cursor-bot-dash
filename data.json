@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-22T16:45:16.973Z",
+  "lastUpdated": "2026-06-22T20:38:30.064Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -125,7 +125,7 @@
           "startDate": "2026-06-16T15:04:03.214Z",
           "endDate": "2026-06-29T14:27:57.000Z",
           "botCount": 38,
-          "totalCount": 86
+          "totalCount": 87
         }
       ],
       "error": null
