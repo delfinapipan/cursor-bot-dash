@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-30T14:07:27.113Z",
+  "lastUpdated": "2026-06-30T19:47:20.465Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -108,8 +108,8 @@
           "name": "Dolphin 69",
           "startDate": "2026-05-19T14:42:10.398Z",
           "endDate": "2026-06-01T14:05:42.000Z",
-          "botCount": 43,
-          "totalCount": 90
+          "botCount": 42,
+          "totalCount": 89
         },
         {
           "id": 6287,
@@ -124,8 +124,16 @@
           "name": "Dolphin 71",
           "startDate": "2026-06-16T15:04:03.214Z",
           "endDate": "2026-06-29T14:27:57.000Z",
-          "botCount": 42,
-          "totalCount": 111
+          "botCount": 43,
+          "totalCount": 113
+        },
+        {
+          "id": 6376,
+          "name": "Dolphin 72",
+          "startDate": "2026-06-30T14:55:26.921Z",
+          "endDate": "2026-07-13T14:18:53.000Z",
+          "botCount": 12,
+          "totalCount": 43
         }
       ],
       "error": null
