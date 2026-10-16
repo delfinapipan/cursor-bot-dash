@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16T15:56:40.023Z",
+  "lastUpdated": "2026-10-16T20:24:06.223Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -27,7 +27,7 @@
     },
     "SQPD": {
       "sprints": [],
-      "error": "Sin board Scrum"
+      "error": "Sin sprints recientes"
     },
     "SQOW": {
       "sprints": [],
@@ -181,7 +181,7 @@
           "startDate": "2026-09-22T14:25:23.335Z",
           "endDate": "2026-10-05T13:48:51.000Z",
           "botCount": 10,
-          "totalCount": 64
+          "totalCount": 66
         }
       ],
       "error": null
