@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-06T04:45:42.050Z",
+  "lastUpdated": "2026-11-06T13:37:41.024Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -189,7 +189,7 @@
           "startDate": "2026-10-20T15:44:40.581Z",
           "endDate": "2026-11-02T15:07:03.000Z",
           "botCount": 0,
-          "totalCount": 67
+          "totalCount": 68
         },
         {
           "id": 6782,
@@ -197,7 +197,7 @@
           "startDate": "2026-11-03T14:22:43.636Z",
           "endDate": "2026-11-16T13:45:17.000Z",
           "botCount": 0,
-          "totalCount": 56
+          "totalCount": 57
         }
       ],
       "error": null
