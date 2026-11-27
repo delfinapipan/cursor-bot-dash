@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-27T01:24:38.658Z",
+  "lastUpdated": "2026-11-27T15:58:48.615Z",
   "squads": {
     "SQZB": {
       "sprints": [],
@@ -197,23 +197,15 @@
           "startDate": "2026-11-03T14:22:43.636Z",
           "endDate": "2026-11-16T13:45:17.000Z",
           "botCount": 4,
-          "totalCount": 84
+          "totalCount": 85
         },
         {
           "id": 6831,
           "name": "Dolphin 81",
           "startDate": "2026-11-17T17:46:09.313Z",
           "endDate": "2026-11-30T17:09:00.000Z",
-          "botCount": 6,
-          "totalCount": 61
-        },
-        {
-          "id": 6732,
-          "name": "Puma 98",
-          "startDate": "2026-11-18T15:56:22.204Z",
-          "endDate": "2026-12-01T03:00:00.000Z",
-          "botCount": 0,
-          "totalCount": 0
+          "botCount": 7,
+          "totalCount": 63
         }
       ],
       "error": null
